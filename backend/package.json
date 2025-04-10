@@ -6,10 +6,13 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "jest",
-    "test:simple": "jest tests/no-setup.test.js",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test": "jest --config=minimal.jest.config.js",
+    "test:basic": "jest --config=minimal.jest.config.js basic.test.js",
+    "test:api": "jest --config=minimal.jest.config.js api.test.js",
+    "test:controllers": "jest --config=minimal.jest.config.js controllers.test.js",
+    "test:manual": "node run-test.js",
+    "test:watch": "jest --config=minimal.jest.config.js --watch",
+    "test:coverage": "jest --config=minimal.jest.config.js --coverage"
   },
   "dependencies": {
     "express": "^4.18.2",
