@@ -1,0 +1,30 @@
+{
+  "name": "mexico-real-estate-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "^14.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-map-gl": "^7.1.0",
+    "i18next": "^23.5.0",
+    "react-i18next": "^13.2.0",
+    "axios": "^1.5.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.15",
+    "postcss": "^8.4.29",
+    "tailwindcss": "^3.3.3",
+    "eslint": "^8.48.0",
+    "eslint-config-next": "^14.1.0",
+    "typescript": "^5.2.2",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7"
+  }
+}
