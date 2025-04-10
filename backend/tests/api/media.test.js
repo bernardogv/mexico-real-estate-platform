@@ -1,9 +1,16 @@
 const request = require('supertest');
-const app = require('../../src/index');
 const { PrismaClient } = require('@prisma/client');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
+
+// Import app in a way that won't automatically start the server
+let app;
+jest.mock('../../src/index', () => {
+  const originalApp = jest.requireActual('../../src/index');
+  app = originalApp;
+  return app;
+});
 
 // Mock dependencies
 jest.mock('@prisma/client', () => {
@@ -89,7 +96,7 @@ describe('Media API Endpoints', () => {
     jest.clearAllMocks();
     
     // Default JWT verification (authenticated as agent)
-    jwt.verify.mockImplementation((token, secret, callback) => {
+    jwt.verify.mockImplementation(() => {
       return { userId: '1', userRole: 'AGENT' };
     });
 
