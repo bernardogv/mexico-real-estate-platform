@@ -8,8 +8,9 @@ process.env.MAX_FILE_SIZE = '5242880'; // 5MB
 const originalConsoleError = console.error;
 console.error = jest.fn();
 
-// Clean up after tests
-global.afterAll(() => {
+// No need to use global.afterAll - it's automatically imported by Jest
+// We'll just use the regular afterAll function
+afterAll(() => {
   // Restore original console methods
   console.error = originalConsoleError;
 });
