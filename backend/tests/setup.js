@@ -9,7 +9,7 @@ const originalConsoleError = console.error;
 console.error = jest.fn();
 
 // Clean up after tests
-afterAll(() => {
+global.afterAll(() => {
   // Restore original console methods
   console.error = originalConsoleError;
 });
