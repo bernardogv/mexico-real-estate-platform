@@ -1,37 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../middleware/auth');
+const { propertyController, mediaController } = require('../controllers');
+const { auth, authorize } = require('../middleware/auth');
 
-// Controllers (would be implemented in separate files)
-const getProperties = (req, res) => {
-  // This would actually use the database
-  res.json({ message: 'Properties retrieved successfully', data: [] });
-};
+// Public routes - no authentication required
+router.get('/', propertyController.getProperties);
+router.get('/:id', propertyController.getPropertyById);
 
-const getPropertyById = (req, res) => {
-  const { id } = req.params;
-  res.json({ message: `Property ${id} retrieved successfully`, data: {} });
-};
+// Protected routes - authentication required
+router.post('/', auth, propertyController.createProperty);
+router.put('/:id', auth, propertyController.updateProperty);
+router.delete('/:id', auth, propertyController.deleteProperty);
 
-const createProperty = (req, res) => {
-  res.status(201).json({ message: 'Property created successfully', data: req.body });
-};
+// Favorites
+router.post('/:id/favorite', auth, propertyController.addToFavorites);
+router.delete('/:id/favorite', auth, propertyController.removeFromFavorites);
 
-const updateProperty = (req, res) => {
-  const { id } = req.params;
-  res.json({ message: `Property ${id} updated successfully`, data: req.body });
-};
-
-const deleteProperty = (req, res) => {
-  const { id } = req.params;
-  res.json({ message: `Property ${id} deleted successfully` });
-};
-
-// Routes
-router.get('/', getProperties);
-router.get('/:id', getPropertyById);
-router.post('/', auth, createProperty);
-router.put('/:id', auth, updateProperty);
-router.delete('/:id', auth, deleteProperty);
+// Media routes
+router.get('/:propertyId/media', mediaController.getPropertyMedia);
+router.post('/:propertyId/media', auth, mediaController.uploadMedia);
 
 module.exports = router;
