@@ -1,23 +1,14 @@
 const express = require('express');
 const router = express.Router();
+const { authController } = require('../controllers');
+const { auth } = require('../middleware/auth');
 
-// Controllers (would be implemented in separate files)
-const register = (req, res) => {
-  res.status(201).json({ message: 'User registered successfully' });
-};
+// Public routes
+router.post('/register', authController.register);
+router.post('/login', authController.login);
 
-const login = (req, res) => {
-  // This would actually verify credentials and generate JWT
-  res.json({ message: 'Login successful', token: 'sample_jwt_token' });
-};
-
-const refreshToken = (req, res) => {
-  res.json({ message: 'Token refreshed', token: 'new_sample_jwt_token' });
-};
-
-// Routes
-router.post('/register', register);
-router.post('/login', login);
-router.post('/refresh-token', refreshToken);
+// Protected routes
+router.post('/refresh-token', auth, authController.refreshToken);
+router.get('/me', auth, authController.getMe);
 
 module.exports = router;
