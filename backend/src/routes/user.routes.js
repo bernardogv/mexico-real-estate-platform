@@ -1,35 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../middleware/auth');
+const { userController } = require('../controllers');
+const { auth, authorize } = require('../middleware/auth');
 
-// Controllers (would be implemented in separate files)
-const getProfile = (req, res) => {
-  res.json({ message: 'User profile retrieved successfully', data: {} });
-};
+// All user routes require authentication
+router.use(auth);
 
-const updateProfile = (req, res) => {
-  res.json({ message: 'User profile updated successfully', data: req.body });
-};
+// Admin-only routes
+router.get('/', authorize(['ADMIN']), userController.getAllUsers);
 
-const getSavedProperties = (req, res) => {
-  res.json({ message: 'Saved properties retrieved successfully', data: [] });
-};
+// User-specific routes (self or admin access)
+router.get('/:id', userController.getUserById);
+router.put('/:id', userController.updateUser);
+router.delete('/:id', userController.deleteUser);
 
-const saveProperty = (req, res) => {
-  const { propertyId } = req.body;
-  res.json({ message: `Property ${propertyId} saved successfully` });
-};
-
-const removeSavedProperty = (req, res) => {
-  const { propertyId } = req.params;
-  res.json({ message: `Property ${propertyId} removed from saved properties` });
-};
-
-// Routes
-router.get('/profile', auth, getProfile);
-router.put('/profile', auth, updateProfile);
-router.get('/saved-properties', auth, getSavedProperties);
-router.post('/saved-properties', auth, saveProperty);
-router.delete('/saved-properties/:propertyId', auth, removeSavedProperty);
+// User's favorites and saved searches
+router.get('/:id/favorites', userController.getUserFavorites);
+router.get('/:id/saved-searches', userController.getUserSavedSearches);
 
 module.exports = router;
