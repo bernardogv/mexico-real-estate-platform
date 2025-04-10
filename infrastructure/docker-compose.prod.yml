@@ -28,6 +28,8 @@ services:
     build:
       context: ..
       dockerfile: ./infrastructure/Dockerfile.backend.fixed
+    ports:
+      - "5555:5555"  # Expose port for Prisma Studio
     volumes:
       - backend_uploads:/app/uploads
     environment:
