@@ -1,0 +1,26 @@
+# Build stage
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy package files and install dependencies
+COPY package*.json ./
+RUN npm ci
+
+# Copy app source code
+COPY . .
+
+# Generate Prisma client
+RUN npx prisma generate
+
+# Create upload directory
+RUN mkdir -p uploads
+
+# Expose port
+EXPOSE 3001
+
+# Set environment variables
+ENV NODE_ENV=production
+
+# Start the application
+CMD ["npm", "start"]
