@@ -10,6 +10,11 @@ RUN npm ci
 # Copy app source code
 COPY frontend/ ./
 
+# Ensure next.config.js exists (create a default one if it doesn't)
+RUN if [ ! -f next.config.js ]; then \
+    echo "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n  reactStrictMode: true,\n};\n\nmodule.exports = nextConfig;" > next.config.js; \
+    fi
+
 # Build the app
 RUN npm run build
 
@@ -25,9 +30,7 @@ RUN npm ci --only=production
 # Copy built app from build stage
 COPY --from=build /app/.next ./.next
 COPY --from=build /app/public ./public
-
-# Try to copy next.config.js but don't fail if it doesn't exist
-COPY --from=build /app/next.config.js ./next.config.js || true
+COPY --from=build /app/next.config.js ./next.config.js
 
 # Set environment variables
 ENV NODE_ENV=production
