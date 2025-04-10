@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { userController } = require('../controllers');
 const { auth, authorize } = require('../middleware/auth');
+const { validate, userSchemas } = require('../middleware/validation');
 
 // All user routes require authentication
 router.use(auth);
@@ -11,7 +12,7 @@ router.get('/', authorize(['ADMIN']), userController.getAllUsers);
 
 // User-specific routes (self or admin access)
 router.get('/:id', userController.getUserById);
-router.put('/:id', userController.updateUser);
+router.put('/:id', validate(userSchemas.updateUser), userController.updateUser);
 router.delete('/:id', userController.deleteUser);
 
 // User's favorites and saved searches
