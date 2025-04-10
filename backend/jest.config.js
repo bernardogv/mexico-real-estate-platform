@@ -8,7 +8,7 @@ module.exports = {
   ],
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov'],
+  setupFilesAfterEnv: ['./tests/jest.setup.js'],
   moduleFileExtensions: ['js', 'json'],
-  moduleDirectories: ['node_modules'],
-  setupFiles: ['./tests/setup.js']
+  moduleDirectories: ['node_modules']
 };
